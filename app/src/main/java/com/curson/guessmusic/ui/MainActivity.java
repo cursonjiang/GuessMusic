@@ -1,18 +1,38 @@
 package com.curson.guessmusic.ui;
 
+import android.app.ActionBar;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.curson.guessmusic.R;
+import com.curson.guessmusic.model.Contacts;
+import com.curson.guessmusic.model.ViewHolder;
+import com.curson.guessmusic.view.MyGridView;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    private MyGridView mGridView;
+
+    //已选择文字框UI容器
+    private LinearLayout mViewWordsContainer;
+
+    private ArrayList<ViewHolder> mSelectWordsBtn;
+
+    //文字框容器
+    private ArrayList<ViewHolder> mAllWords;
 
     //标记动画是否处于运行当中
     private boolean mIsRunning = false;
@@ -46,6 +66,7 @@ public class MainActivity extends ActionBarActivity {
         initView();
         initAnimation();
         initListener();
+        initCurrentStageData();
     }
 
     /**
@@ -55,6 +76,8 @@ public class MainActivity extends ActionBarActivity {
         mViewPan = (ImageView) findViewById(R.id.mViewPan);
         mViewPanBar = (ImageView) findViewById(R.id.mViewPanBar);
         mBtnPlayStart = (ImageButton) findViewById(R.id.btn_play_start);
+        mGridView = (MyGridView) findViewById(R.id.gridview);
+        mViewWordsContainer = (LinearLayout) findViewById(R.id.word_select_container);
     }
 
     /**
@@ -165,6 +188,60 @@ public class MainActivity extends ActionBarActivity {
         mBarOutLin = new LinearInterpolator();
         mBarOutAnim.setInterpolator(mBarOutLin);
         mBarOutAnim.setFillAfter(true);//设置为动画结束之后的状态
+    }
+
+    /**
+     * 初始化数据
+     */
+    private void initCurrentStageData() {
+        //初始化已选择框
+        mSelectWordsBtn = initSelectWord();
+        ActionBar.LayoutParams params = new ActionBar.LayoutParams(140, 140);
+        for (int i = 0; i < mSelectWordsBtn.size(); i++) {
+            mViewWordsContainer.addView(mSelectWordsBtn.get(i).mViewButton, params);
+        }
+        //获取数据
+        mAllWords = initAllWord();
+        //更新数据
+        mGridView.updateData(mAllWords);
+
+    }
+
+    /**
+     * 初始化待选文字框
+     *
+     * @return
+     */
+    private ArrayList<ViewHolder> initAllWord() {
+        ArrayList<ViewHolder> data = new ArrayList<>();
+
+        //获得所有待选文字
+        for (int i = 0; i < Contacts.COUNTS_WORDS; i++) {
+            ViewHolder button = new ViewHolder();
+            button.mContent = "哈";
+            data.add(button);
+        }
+        return data;
+    }
+
+    /**
+     * 初始化已选择文字框
+     *
+     * @return
+     */
+    private ArrayList<ViewHolder> initSelectWord() {
+        ArrayList<ViewHolder> data = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            View view = LayoutInflater.from(this).inflate(R.layout.self_ui_gridview_item, null);
+            ViewHolder holder = new ViewHolder();
+            holder.mViewButton = (Button) view.findViewById(R.id.item_btn);
+            holder.mViewButton.setTextColor(Color.WHITE);
+            holder.mViewButton.setText("");
+            holder.mIsVisiable = false;
+            holder.mViewButton.setBackgroundResource(R.mipmap.game_wordblank);
+            data.add(holder);
+        }
+        return data;
     }
 
     @Override

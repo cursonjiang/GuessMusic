@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <!-- 已选择文字框-->
+    <LinearLayout
+        android:id="@+id/word_select_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+    </LinearLayout>
+
+    <!-- 横线-->
+    <ImageView
+        android:id="@+id/horizontal_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/game_line"/>
+
+    <!-- 待选择文字框-->
+    <com.curson.guessmusic.view.MyGridView
+        android:id="@+id/gridview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:horizontalSpacing="2dp"
+        android:numColumns="8"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        android:verticalSpacing="2dp"
+        tools:ignore="NewApi,RtlCompat">
+
+    </com.curson.guessmusic.view.MyGridView>
+</LinearLayout>
