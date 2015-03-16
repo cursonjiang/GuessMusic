@@ -58,7 +58,7 @@
             android:background="@drawable/play_button_icon"
             tools:ignore="ContentDescription"/>
 
-        <!-- 拨动杆-->
+        <!-- 拨杆-->
         <ImageView
             android:id="@+id/imageview2"
             android:layout_width="50dp"
