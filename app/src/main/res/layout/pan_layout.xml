@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/layout_pan"
+              android:orientation="vertical"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:layout_marginTop="30dp"
+              android:layout_centerVertical="true"
+              android:layout_centerHorizontal="true">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <!-- 播放按钮-->
+        <ImageView
+            android:src="@mipmap/game_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <!-- 歌曲-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="歌曲"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"/>
+    </FrameLayout>
+
+    <!-- 唱片-->
+    <FrameLayout
+        android:layout_width="260dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageview1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@mipmap/game_disc"
+            tools:ignore="ContentDescription"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/game_disc_light"
+            android:layout_gravity="center"
+            tools:ignore="ContentDescription"/>
+
+        <!-- 播放按钮-->
+        <ImageButton
+            android:id="@+id/btn_play_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/play_button_icon"
+            tools:ignore="ContentDescription"/>
+
+        <!-- 拨动杆-->
+        <ImageView
+            android:id="@+id/imageview2"
+            android:layout_width="50dp"
+            android:layout_height="140dp"
+            android:layout_gravity="end"
+            tools:ignore="ContentDescription"
+            android:src="@mipmap/index_pin"/>
+    </FrameLayout>
+
+</LinearLayout>

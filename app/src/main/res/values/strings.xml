@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">猜歌游戏</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
