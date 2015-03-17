@@ -291,6 +291,8 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
      */
     private String[] generateWords() {
 
+        Random random = new Random();
+
         String[] words = new String[Constants.COUNTS_WORDS];
 
         //存入歌名
@@ -302,6 +304,17 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
         for (int i = mCurrentSong.getSongNameLength(); i < Constants.COUNTS_WORDS; i++) {
             words[i] = String.valueOf(getRandomChat());
         }
+
+        //打乱文字数序:首先从所有元素中随机选取一个,与第一个元素进行交换
+        //然后在第二个之后,选择一个元素与第二个交换,直到最后一个元素
+        //这样能够确保每隔元素在每隔位置的概率都是1/n
+        for (int i = Constants.COUNTS_WORDS - 1; i >= 0; i--) {
+            int index = random.nextInt(i + 1);
+            String buf = words[index];
+            words[index] = words[i];
+            words[i] = buf;
+        }
+
         return words;
     }
 
