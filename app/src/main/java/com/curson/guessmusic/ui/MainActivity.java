@@ -35,6 +35,9 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
     //当前歌曲名称
     private TextView mCurrentSongNamePassView;
 
+    //当前游戏关的索引
+    private TextView mCurrentStageView;
+
     //当前关卡的索引
     private TextView mCurrentStagePassView;
 
@@ -169,6 +172,33 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
         if (mCurrentSongNamePassView != null) {
             mCurrentSongNamePassView.setText(mCurrentSong.getSongName());
         }
+
+        //下一关按键处理
+        ImageButton btnPass = (ImageButton) findViewById(R.id.btn_next);
+        btnPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (judgeAppPassed()) {
+                    //进入到通关界面
+                } else {
+                    //开始新一关,隐藏过关界面
+                    mPassView.setVisibility(View.GONE);
+
+                    //加载关卡数据
+                    initCurrentStageData();
+                }
+            }
+        });
+    }
+
+    /**
+     * 判断是否通关
+     *
+     * @return
+     */
+    private boolean judgeAppPassed() {
+        //当前关卡索引与歌曲总数对比
+        return (mCurrentStageIndex == Constants.SONG_INFO.length - 1);
     }
 
     /**
@@ -354,7 +384,7 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
     }
 
     /**
-     * 初始化游戏数据
+     * 初始化当前关卡数据
      */
     private void initCurrentStageData() {
         //读取当前关的歌曲信息
@@ -362,9 +392,18 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
         //初始化已选择框
         mSelectWordsBtn = initSelectWord();
         ActionBar.LayoutParams params = new ActionBar.LayoutParams(140, 140);
+        //清空原来的答案
+        mViewWordsContainer.removeAllViews();
+        //增加新的答案框
         for (int i = 0; i < mSelectWordsBtn.size(); i++) {
             mViewWordsContainer.addView(mSelectWordsBtn.get(i).mViewButton, params);
         }
+        //显示当前关的索引
+        mCurrentStageView = (TextView) findViewById(R.id.text_current_stage);
+        if (mCurrentStageView != null) {
+            mCurrentStageView.setText(String.valueOf(mCurrentStageIndex + 1));
+        }
+
         //获取数据
         mAllWords = initAllWord();
         //更新数据
