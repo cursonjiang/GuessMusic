@@ -32,6 +32,12 @@ import java.util.TimerTask;
 
 public class MainActivity extends ActionBarActivity implements IWordButtonClickListener {
 
+    //当前歌曲名称
+    private TextView mCurrentSongNamePassView;
+
+    //当前关卡的索引
+    private TextView mCurrentStagePassView;
+
     //金币View
     private TextView mViewCurrentCoins;
 
@@ -145,9 +151,24 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
      * 处理过关界面及事件
      */
     private void handlePassEvent() {
-        MyLog.d(TAG, "handlePassEvent");
+        //显示过关界面
         mPassView = findViewById(R.id.pass_view);
         mPassView.setVisibility(View.VISIBLE);
+
+        //停止未完成的动画
+        mViewPan.clearAnimation();
+
+        //当前关卡的索引
+        mCurrentStagePassView = (TextView) findViewById(R.id.text_current_stage_pass);
+        if (mCurrentStagePassView != null) {
+            mCurrentStagePassView.setText(String.valueOf(mCurrentStageIndex + 1));
+        }
+
+        //显示歌曲名称
+        mCurrentSongNamePassView = (TextView) findViewById(R.id.text_current_song_name_pass);
+        if (mCurrentSongNamePassView != null) {
+            mCurrentSongNamePassView.setText(mCurrentSong.getSongName());
+        }
     }
 
     /**
