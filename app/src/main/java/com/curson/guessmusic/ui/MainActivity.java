@@ -31,6 +31,9 @@ import java.util.TimerTask;
 
 public class MainActivity extends ActionBarActivity implements IWordButtonClickListener {
 
+    //过关界面
+    private View mPassView;
+
     //当前关的索引
     private int mCurrentStageIndex = -1;
 
@@ -109,12 +112,25 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
         //检查答案
         if (checkResult == Constants.STATUS_ANSWER_RIGHT) {
             //过关并获得响应奖励
+            handlePassEvent();
         } else if (checkResult == Constants.STATUS_ANSWER_WRONG) {
             //错误提示并闪烁文字
             sparkTheWrods();
         } else if (checkResult == Constants.STATUE_ANSWER_LACK) {
-            //
+            //设置文字为白色(Normal)
+            for (int i = 0; i < mSelectWordsBtn.size(); i++) {
+                mSelectWordsBtn.get(i).mViewButton.setTextColor(Color.WHITE);
+            }
         }
+    }
+
+    /**
+     * 处理过关界面及事件
+     */
+    private void handlePassEvent() {
+        MyLog.d(TAG, "handlePassEvent");
+        mPassView = findViewById(R.id.pass_view);
+        mPassView.setVisibility(View.VISIBLE);
     }
 
     /**
