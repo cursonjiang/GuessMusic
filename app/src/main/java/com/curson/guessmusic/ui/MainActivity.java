@@ -19,6 +19,7 @@ import com.curson.guessmusic.data.Constants;
 import com.curson.guessmusic.model.IWordButtonClickListener;
 import com.curson.guessmusic.model.Song;
 import com.curson.guessmusic.model.ViewHolder;
+import com.curson.guessmusic.uitl.MyLog;
 import com.curson.guessmusic.view.MyGridView;
 
 import java.io.UnsupportedEncodingException;
@@ -132,6 +133,7 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
                 mSelectWordsBtn.get(i).mIndex = button.mIndex;
 
                 //Log.....
+                MyLog.d(TAG, String.valueOf(mSelectWordsBtn.get(i).mIndex));
 
                 //设置待选框可见性
                 setButtonVisiable(button, View.INVISIBLE);
@@ -150,6 +152,9 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
     private void setButtonVisiable(ViewHolder button, int visibility) {
         button.mViewButton.setVisibility(visibility);
         button.mIsVisiable = (visibility == View.VISIBLE) ? true : false;
+
+        //Log
+        MyLog.d(TAG, String.valueOf(button.mIsVisiable));
     }
 
     /**
