@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.curson.guessmusic.R;
 import com.curson.guessmusic.data.Constants;
@@ -30,6 +31,12 @@ import java.util.TimerTask;
 
 
 public class MainActivity extends ActionBarActivity implements IWordButtonClickListener {
+
+    //金币View
+    private TextView mViewCurrentCoins;
+
+    //当前金币的数量
+    private int mCurrentCoins = Constants.TOTAL_COINS;
 
     //过关界面
     private View mPassView;
@@ -86,6 +93,7 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
         initAnimation();
         initListener();
         initCurrentStageData();
+        handleDeleteWord();
     }
 
     /**
@@ -97,6 +105,8 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
         mBtnPlayStart = (ImageButton) findViewById(R.id.btn_play_start);
         mGridView = (MyGridView) findViewById(R.id.gridview);
         mViewWordsContainer = (LinearLayout) findViewById(R.id.word_select_container);
+        mViewCurrentCoins = (TextView) findViewById(R.id.txt_bar_coins);
+        mViewCurrentCoins.setText(String.valueOf(mCurrentCoins));
 
         //注册监听
         mGridView.registOnWordButtonClick(this);
@@ -316,7 +326,7 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
     }
 
     /**
-     * 初始化数据
+     * 初始化游戏数据
      */
     private void initCurrentStageData() {
         //读取当前关的歌曲信息
@@ -492,6 +502,117 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
         Timer timer = new Timer();
         //执行定时器
         timer.schedule(task, 1, 150);
+    }
+
+    /**
+     * 删除一个文字
+     */
+    private void deleteOneWord() {
+        //减少金币
+        if (!handleCoins(-getDeleteWordCoins())) {
+            //金币不够,显示提示对话框
+            return;
+        }
+        //将这个索引对应的WordButton设置为不可见
+        setButtonVisiable(findNotAnswerWord(), View.INVISIBLE);
+    }
+
+    /**
+     * 找到一个不是答案的文字,并且当前是可见的
+     *
+     * @return
+     */
+    private ViewHolder findNotAnswerWord() {
+        Random random = new Random();
+        ViewHolder button;
+        while (true) {
+            int index = random.nextInt(Constants.COUNTS_WORDS);
+            button = mAllWords.get(index);
+            //如果不隐藏,并且不是答案
+            if (button.mIsVisiable && !isTheAnswerWord(button)) {
+                return button;
+            }
+        }
+    }
+
+    /**
+     * 判断某个文字是否为答案
+     *
+     * @param word
+     * @return
+     */
+    private boolean isTheAnswerWord(ViewHolder word) {
+        boolean result = false;
+        for (int i = 0; i < mCurrentSong.getSongNameLength(); i++) {
+            if (word.mContent.equals(String.valueOf(mCurrentSong.getNameCharacters()[i]))) {
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 增加或减少指定数量的金币
+     *
+     * @param data
+     * @return true 增加/减少成功, false 失败
+     */
+    private boolean handleCoins(int data) {
+        //判断当前总的金币数量是否可被减少
+        if (mCurrentCoins + data >= 0) {
+            //可以减少
+            mCurrentCoins += data;
+            mViewCurrentCoins.setText(String.valueOf(mCurrentCoins));
+            return true;
+        } else {
+            //金币不够
+            return false;
+        }
+    }
+
+    /**
+     * 从配置文件中获取删除需要的金币数量
+     *
+     * @return
+     */
+    private int getDeleteWordCoins() {
+        return this.getResources().getInteger(R.integer.pay_delete_word);
+    }
+
+    /**
+     * 从配置文件中获取提示需要的金币数量
+     *
+     * @return
+     */
+    private int getTipWordCoins() {
+        return this.getResources().getInteger(R.integer.pay_tip_answer);
+    }
+
+    /**
+     * 处理删除待选文字事件
+     */
+    private void handleDeleteWord() {
+        ImageButton button = (ImageButton) findViewById(R.id.btn_delete_word);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteOneWord();
+            }
+        });
+    }
+
+    /**
+     * 处理提示按键事件
+     */
+    private void handleTipAnswer() {
+        ImageButton button = (ImageButton) findViewById(R.id.btn_tip_answer);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override

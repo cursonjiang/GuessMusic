@@ -83,7 +83,7 @@ public class MyGridView extends GridView {
                 //加载动画
                 mScaleAnimation = AnimationUtils.loadAnimation(mContext, R.anim.scale);
                 //设置动画的延迟时间
-                mScaleAnimation.setStartOffset(position * 100);
+                mScaleAnimation.setStartOffset(position * 50);
 
                 holder.mIndex = position;
                 holder.mViewButton = (Button) convertView.findViewById(R.id.item_btn);

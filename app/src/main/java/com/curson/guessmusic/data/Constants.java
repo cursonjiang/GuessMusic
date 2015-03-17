@@ -7,6 +7,11 @@ package com.curson.guessmusic.data;
 public class Constants {
 
     /**
+     * 金币总数
+     */
+    public static final int TOTAL_COINS = 100;
+
+    /**
      * 闪烁次数
      */
     public static final int SPASH_TIMES = 6;

@@ -13,7 +13,8 @@
         android:background="@drawable/back_button_icon"
         android:layout_centerVertical="true"
         android:layout_marginStart="10dp"
-        android:contentDescription="返回按钮"/>
+        android:contentDescription="返回按钮"
+        tools:ignore="RtlCompat"/>
 
     <!-- 右侧加金币按钮-->
     <FrameLayout
@@ -22,7 +23,8 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="10dp">
+        android:layout_marginEnd="10dp"
+        tools:ignore="RtlCompat">
 
         <ImageButton
             android:id="@+id/btn_bar_add_coins"
@@ -37,7 +39,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="35dp"
             android:background="@mipmap/game_coin_icon"
-            tools:ignore="ContentDescription"/>
+            tools:ignore="ContentDescription,RtlCompat"/>
 
         <TextView
             android:id="@+id/txt_bar_coins"
@@ -48,7 +50,7 @@
             android:layout_gravity="center_vertical|right"
             android:textStyle="bold"
             android:textColor="@color/white"
-            tools:ignore="RtlHardcoded"/>
+            tools:ignore="RtlCompat,RtlHardcoded"/>
     </FrameLayout>
 
 </RelativeLayout>
