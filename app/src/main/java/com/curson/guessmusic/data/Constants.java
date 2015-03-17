@@ -9,7 +9,7 @@ public class Constants {
     /**
      * 金币总数
      */
-    public static final int TOTAL_COINS = 100;
+    public static final int TOTAL_COINS = 1000;
 
     /**
      * 闪烁次数

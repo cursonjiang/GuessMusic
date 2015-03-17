@@ -92,8 +92,15 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
         initView();
         initAnimation();
         initListener();
+
+        //初始化游戏数据
         initCurrentStageData();
+
+        //处理删除按键事件
         handleDeleteWord();
+
+        //处理提示按键事件
+        handleTipAnswer();
     }
 
     /**
@@ -505,12 +512,39 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
     }
 
     /**
+     * 提示一个文字
+     */
+    private void tipAnswer() {
+        boolean tipWord = false;
+        for (int i = 0; i < mSelectWordsBtn.size(); i++) {
+            if (mSelectWordsBtn.get(i).mContent.length() == 0) {
+                //根据当前答案框的条件选择对应的文字并填入
+                onWordButtonClick(findIsAnswerWord(i));
+                tipWord = true;
+                //减少金币
+                if (!handleCoins(-getTipWordCoins())) {
+                    //金币不够,显示对话框
+                    return;
+                }
+                break;
+            }
+        }
+        //没有找到可以填充的答案
+        if (!tipWord) {
+            //闪烁文字提示用户
+            sparkTheWrods();
+        }
+
+
+    }
+
+    /**
      * 删除一个文字
      */
     private void deleteOneWord() {
         //减少金币
         if (!handleCoins(-getDeleteWordCoins())) {
-            //金币不够,显示提示对话框
+            //金币不够,显示对话框
             return;
         }
         //将这个索引对应的WordButton设置为不可见
@@ -524,15 +558,32 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
      */
     private ViewHolder findNotAnswerWord() {
         Random random = new Random();
-        ViewHolder button;
+        ViewHolder words;
         while (true) {
             int index = random.nextInt(Constants.COUNTS_WORDS);
-            button = mAllWords.get(index);
+            words = mAllWords.get(index);
             //如果不隐藏,并且不是答案
-            if (button.mIsVisiable && !isTheAnswerWord(button)) {
-                return button;
+            if (words.mIsVisiable && !isTheAnswerWord(words)) {
+                return words;
             }
         }
+    }
+
+    /**
+     * 找到一个是答案的文字
+     *
+     * @param index 当前需要填入答案框的索引
+     * @return
+     */
+    private ViewHolder findIsAnswerWord(int index) {
+        ViewHolder words;
+        for (int i = 0; i < Constants.COUNTS_WORDS; i++) {
+            words = mAllWords.get(i);
+            if (words.mContent.equals(String.valueOf(mCurrentSong.getNameCharacters()[index]))) {
+                return words;
+            }
+        }
+        return null;
     }
 
     /**
@@ -610,7 +661,7 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                tipAnswer();
             }
         });
     }
