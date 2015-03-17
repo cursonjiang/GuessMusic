@@ -5,6 +5,8 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
@@ -20,11 +22,13 @@ import java.util.ArrayList;
  */
 public class MyGridView extends GridView {
 
-    private Context mContext;
+    private Animation mScaleAnimation;
+
+    private ArrayList<ViewHolder> mArrayList = new ArrayList<>();
 
     private MyGridAdapter mGridAdapter;
 
-    private ArrayList<ViewHolder> mArrayList = new ArrayList<>();
+    private Context mContext;
 
     public MyGridView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -40,9 +44,14 @@ public class MyGridView extends GridView {
      */
     public void updateData(ArrayList<ViewHolder> list) {
         mArrayList = list;
+        //重新设置数据源
         setAdapter(mGridAdapter);
     }
 
+
+    /**
+     * 适配器
+     */
     class MyGridAdapter extends BaseAdapter {
         @Override
         public int getCount() {
@@ -66,6 +75,11 @@ public class MyGridView extends GridView {
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.self_ui_gridview_item, null);
                 holder = mArrayList.get(position);
 
+                //加载动画
+                mScaleAnimation = AnimationUtils.loadAnimation(mContext, R.anim.scale);
+                //设置动画的延迟时间
+                mScaleAnimation.setStartOffset(position * 100);
+
                 holder.mIndex = position;
                 holder.mViewButton = (Button) convertView.findViewById(R.id.item_btn);
 
@@ -74,6 +88,10 @@ public class MyGridView extends GridView {
                 holder = (ViewHolder) convertView.getTag();
             }
             holder.mViewButton.setText(holder.mContent);
+
+            //播放动画
+            convertView.startAnimation(mScaleAnimation);
+
             return convertView;
         }
     }

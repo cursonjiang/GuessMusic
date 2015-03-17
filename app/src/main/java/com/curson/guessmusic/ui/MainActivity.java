@@ -29,6 +29,7 @@ public class MainActivity extends ActionBarActivity {
     //已选择文字框UI容器
     private LinearLayout mViewWordsContainer;
 
+    //已选择文字
     private ArrayList<ViewHolder> mSelectWordsBtn;
 
     //文字框容器
@@ -204,7 +205,6 @@ public class MainActivity extends ActionBarActivity {
         mAllWords = initAllWord();
         //更新数据
         mGridView.updateData(mAllWords);
-
     }
 
     /**
@@ -214,7 +214,6 @@ public class MainActivity extends ActionBarActivity {
      */
     private ArrayList<ViewHolder> initAllWord() {
         ArrayList<ViewHolder> data = new ArrayList<>();
-
         //获得所有待选文字
         for (int i = 0; i < Contacts.COUNTS_WORDS; i++) {
             ViewHolder button = new ViewHolder();
@@ -233,13 +232,13 @@ public class MainActivity extends ActionBarActivity {
         ArrayList<ViewHolder> data = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             View view = LayoutInflater.from(this).inflate(R.layout.self_ui_gridview_item, null);
-            ViewHolder holder = new ViewHolder();
-            holder.mViewButton = (Button) view.findViewById(R.id.item_btn);
-            holder.mViewButton.setTextColor(Color.WHITE);
-            holder.mViewButton.setText("");
-            holder.mIsVisiable = false;
-            holder.mViewButton.setBackgroundResource(R.mipmap.game_wordblank);
-            data.add(holder);
+            ViewHolder button = new ViewHolder();
+            button.mViewButton = (Button) view.findViewById(R.id.item_btn);
+            button.mViewButton.setTextColor(Color.WHITE);
+            button.mViewButton.setText("");
+            button.mIsVisiable = false;
+            button.mViewButton.setBackgroundResource(R.mipmap.game_wordblank);
+            data.add(button);
         }
         return data;
     }
