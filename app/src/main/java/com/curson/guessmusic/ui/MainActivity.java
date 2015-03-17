@@ -25,6 +25,8 @@ import com.curson.guessmusic.view.MyGridView;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainActivity extends ActionBarActivity implements IWordButtonClickListener {
@@ -100,6 +102,19 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
     @Override
     public void onWordButtonClick(ViewHolder button) {
         setSelectWord(button);
+
+        //获得答案状态
+        int checkResult = checkTheAnswer();
+
+        //检查答案
+        if (checkResult == Constants.STATUS_ANSWER_RIGHT) {
+            //过关并获得响应奖励
+        } else if (checkResult == Constants.STATUS_ANSWER_WRONG) {
+            //错误提示并闪烁文字
+            sparkTheWrods();
+        } else if (checkResult == Constants.STATUE_ANSWER_LACK) {
+            //
+        }
     }
 
     /**
@@ -107,6 +122,7 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
      *
      * @param button
      */
+
     private void clearTheAnswer(ViewHolder button) {
         //清除已选框文字
         button.mViewButton.setText("");
@@ -375,7 +391,6 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
             words[index] = words[i];
             words[i] = buf;
         }
-
         return words;
     }
 
@@ -403,6 +418,64 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
             e.printStackTrace();
         }
         return str.charAt(0);
+    }
+
+    /**
+     * 检查答案
+     *
+     * @return
+     */
+    private int checkTheAnswer() {
+        //先检查长度
+        for (int i = 0; i < mSelectWordsBtn.size(); i++) {
+            //如果有空的,说明答案还不完整
+            if (mSelectWordsBtn.get(i).mContent.length() == 0) {
+                return Constants.STATUE_ANSWER_LACK;
+            }
+        }
+
+        //答案完整,继续检查正确性
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < mSelectWordsBtn.size(); i++) {
+            sb.append(mSelectWordsBtn.get(i).mContent);
+        }
+        return (sb.toString().equals(mCurrentSong.getSongName())) ?
+                Constants.STATUS_ANSWER_RIGHT : Constants.STATUS_ANSWER_WRONG;
+    }
+
+    /**
+     * 闪烁文字
+     */
+    private void sparkTheWrods() {
+        //定时器相关
+        TimerTask task = new TimerTask() {
+            //文字状态
+            boolean mChange = false;
+            //记录闪烁的次数
+            int mSparkTimes = 0;
+
+            @Override
+            public void run() {
+                //主线程更新
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (++mSparkTimes > Constants.SPASH_TIMES) {
+                            return;
+                        }
+                        //执行闪烁逻辑:交替显示红色和白色文字
+                        for (int i = 0; i < mSelectWordsBtn.size(); i++) {
+                            //mChange为true,闪烁红色,false闪烁白色
+                            mSelectWordsBtn.get(i).mViewButton.setTextColor(mChange ? Color.RED : Color.WHITE);
+                        }
+                        mChange = !mChange;
+                    }
+                });
+            }
+        };
+        Timer timer = new Timer();
+        //执行定时器
+        timer.schedule(task, 1, 150);
     }
 
     @Override

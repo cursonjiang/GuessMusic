@@ -7,6 +7,26 @@ package com.curson.guessmusic.data;
 public class Constants {
 
     /**
+     * 闪烁次数
+     */
+    public static final int SPASH_TIMES = 6;
+
+    /**
+     * 答案正确
+     */
+    public static final int STATUS_ANSWER_RIGHT = 1;
+
+    /**
+     * 答案错误
+     */
+    public static final int STATUS_ANSWER_WRONG = 2;
+
+    /**
+     * 答案不完整
+     */
+    public static final int STATUE_ANSWER_LACK = 3;
+
+    /**
      * 待选文字个数
      */
     public static final int COUNTS_WORDS = 24;
@@ -16,6 +36,9 @@ public class Constants {
      */
     public static final int INDEX_FILE_NAME = 0;
 
+    /**
+     * 歌曲名字
+     */
     public static final int INDEX_SONG_NAME = 1;
 
     /**

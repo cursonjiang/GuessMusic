@@ -14,7 +14,7 @@ public class ViewHolder {
     public boolean mIsVisiable;
     //内容
     public String mContent;
-
+    //按钮
     public Button mViewButton;
 
     public ViewHolder() {

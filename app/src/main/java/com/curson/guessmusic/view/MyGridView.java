@@ -2,7 +2,6 @@ package com.curson.guessmusic.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,7 +90,6 @@ public class MyGridView extends GridView {
                 holder.mViewButton.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.i(TAG, "1");
                         mWordButtonClickListener.onWordButtonClick(holder);
                     }
                 });
@@ -114,7 +112,6 @@ public class MyGridView extends GridView {
      * @param listener
      */
     public void registOnWordButtonClick(IWordButtonClickListener listener) {
-        Log.i(TAG, "2");
         mWordButtonClickListener = listener;
     }
 
