@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -99,7 +98,43 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
 
     @Override
     public void onWordButtonClick(ViewHolder button) {
-        Log.i(TAG, "3");
+        setSelectWord(button);
+    }
+
+    /**
+     * 设置答案
+     *
+     * @param button
+     */
+    private void setSelectWord(ViewHolder button) {
+        for (int i = 0; i < mSelectWordsBtn.size(); i++) {
+            if (mSelectWordsBtn.get(i).mContent.length() == 0) {
+                //设置答案文字框内容及可见性
+                mSelectWordsBtn.get(i).mViewButton.setText(button.mContent);
+                mSelectWordsBtn.get(i).mIsVisiable = true;
+                mSelectWordsBtn.get(i).mContent = button.mContent;
+                //记录索引
+                mSelectWordsBtn.get(i).mIndex = button.mIndex;
+
+                //Log.....
+
+                //设置待选框可见性
+                setButtonVisiable(button, View.INVISIBLE);
+
+                break;
+            }
+        }
+    }
+
+    /**
+     * 设置待选文字框是否可见
+     *
+     * @param button
+     * @param visibility
+     */
+    private void setButtonVisiable(ViewHolder button, int visibility) {
+        button.mViewButton.setVisibility(View.VISIBLE);
+        button.mIsVisiable = (visibility == View.VISIBLE) ? true : false;
     }
 
     /**

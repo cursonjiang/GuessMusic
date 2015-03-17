@@ -25,6 +25,7 @@ import java.util.ArrayList;
 public class MyGridView extends GridView {
 
     private static final String TAG = "MyGridView";
+
     private IWordButtonClickListener mWordButtonClickListener;
 
     private Animation mScaleAnimation;
