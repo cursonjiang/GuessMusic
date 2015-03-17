@@ -22,7 +22,9 @@ import com.curson.guessmusic.model.Song;
 import com.curson.guessmusic.model.ViewHolder;
 import com.curson.guessmusic.view.MyGridView;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class MainActivity extends ActionBarActivity implements IWordButtonClickListener {
@@ -252,9 +254,11 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
     private ArrayList<ViewHolder> initAllWord() {
         ArrayList<ViewHolder> data = new ArrayList<>();
         //获得所有待选文字
+        String[] words = generateWords();
+
         for (int i = 0; i < Constants.COUNTS_WORDS; i++) {
             ViewHolder button = new ViewHolder();
-            button.mContent = "哈";
+            button.mContent = words[i];
             data.add(button);
         }
         return data;
@@ -278,6 +282,53 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
             data.add(button);
         }
         return data;
+    }
+
+    /**
+     * 生成所有的待选文字
+     *
+     * @return
+     */
+    private String[] generateWords() {
+
+        String[] words = new String[Constants.COUNTS_WORDS];
+
+        //存入歌名
+        for (int i = 0; i < mCurrentSong.getSongNameLength(); i++) {
+            words[i] = String.valueOf(mCurrentSong.getNameCharacters()[i]);
+        }
+
+        //获取随机文字并存入数组
+        for (int i = mCurrentSong.getSongNameLength(); i < Constants.COUNTS_WORDS; i++) {
+            words[i] = String.valueOf(getRandomChat());
+        }
+        return words;
+    }
+
+    /**
+     * 生成随机汉字
+     *
+     * @return
+     */
+    private char getRandomChat() {
+        String str = "";
+        int hightPos;
+        int lowPos;
+
+        Random random = new Random();
+        hightPos = (176 + Math.abs(random.nextInt(39)));
+        lowPos = (161 + Math.abs(random.nextInt(93)));
+
+        byte[] b = new byte[2];
+        b[0] = (Integer.valueOf(hightPos)).byteValue();
+        b[1] = (Integer.valueOf(lowPos)).byteValue();
+
+        try {
+            str = new String(b, "GBK");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return str.charAt(0);
     }
 
     @Override
