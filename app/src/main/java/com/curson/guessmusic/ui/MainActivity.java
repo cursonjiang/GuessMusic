@@ -102,6 +102,21 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
     }
 
     /**
+     * 清除已选文字
+     *
+     * @param button
+     */
+    private void clearTheAnswer(ViewHolder button) {
+        //清除已选框文字
+        button.mViewButton.setText("");
+        button.mContent = "";
+        button.mIsVisiable = false;
+
+        //设置待选框的可见性
+        setButtonVisiable(mAllWords.get(button.mIndex), View.VISIBLE);
+    }
+
+    /**
      * 设置答案
      *
      * @param button
@@ -133,7 +148,7 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
      * @param visibility
      */
     private void setButtonVisiable(ViewHolder button, int visibility) {
-        button.mViewButton.setVisibility(View.VISIBLE);
+        button.mViewButton.setVisibility(visibility);
         button.mIsVisiable = (visibility == View.VISIBLE) ? true : false;
     }
 
@@ -308,12 +323,18 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
         ArrayList<ViewHolder> data = new ArrayList<>();
         for (int i = 0; i < mCurrentSong.getSongNameLength(); i++) {
             View view = LayoutInflater.from(this).inflate(R.layout.self_ui_gridview_item, null);
-            ViewHolder button = new ViewHolder();
+            final ViewHolder button = new ViewHolder();
             button.mViewButton = (Button) view.findViewById(R.id.item_btn);
             button.mViewButton.setTextColor(Color.WHITE);
             button.mViewButton.setText("");
             button.mIsVisiable = false;
             button.mViewButton.setBackgroundResource(R.mipmap.game_wordblank);
+            button.mViewButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clearTheAnswer(button);
+                }
+            });
             data.add(button);
         }
         return data;
