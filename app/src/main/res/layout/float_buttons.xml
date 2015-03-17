@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
-                android:background="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -18,8 +17,9 @@
             android:src="@mipmap/game_level_title"
             android:layout_gravity="center_horizontal"/>
 
+        <!-- 显示关卡-->
         <TextView
-            android:id="@+id/guanka"
+            android:id="@+id/text_current_stage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1"
@@ -37,45 +37,14 @@
         android:orientation="vertical"
         android:layout_centerVertical="true">
 
-        <!-- 提示按钮-->
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <ImageButton
-                android:id="@+id/buy1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/buy1_button_icon"/>
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="17dp"
-                android:background="@mipmap/game_coin_icon"
-                android:layout_marginStart="6dp"
-                android:layout_gravity="bottom"
-                android:layout_marginBottom="8dp"
-                tools:ignore="RtlCompat"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:text="30"
-                android:textSize="12sp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:textColor="@color/white"
-                tools:ignore="HardcodedText,RtlCompat,SmallSp"/>
-        </FrameLayout>
-
         <!-- 删除按钮-->
         <FrameLayout
+            android:id="@+id/framelayout_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <ImageButton
-                android:id="@+id/buy2"
+                android:id="@+id/btn_delete_word"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/buy2_button_icon"/>
@@ -93,16 +62,49 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
-                android:text="30"
+                android:text="@integer/pay_delete_word"
                 android:textSize="12sp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="9dp"
                 android:layout_marginEnd="8dp"
                 android:textColor="@color/white"
                 tools:ignore="HardcodedText,RtlCompat,SmallSp"/>
         </FrameLayout>
 
+        <!-- 提示按钮-->
+        <FrameLayout
+            android:id="@+id/framelayout_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/btn_tip_answer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/buy1_button_icon"/>
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="17dp"
+                android:background="@mipmap/game_coin_icon"
+                android:layout_marginStart="6dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="8dp"
+                tools:ignore="RtlCompat"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:text="@integer/pay_tip_answer"
+                android:textSize="12sp"
+                android:layout_marginBottom="9dp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/white"
+                tools:ignore="HardcodedText,RtlCompat,SmallSp"/>
+        </FrameLayout>
     </LinearLayout>
 
+    <!-- 分享按钮-->
     <ImageButton
         android:id="@+id/share"
         android:layout_alignParentEnd="true"

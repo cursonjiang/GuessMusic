@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 金币的默认值-->
+    <integer name="pay_tip_answer">90</integer>
+    <integer name="pay_delete_word">30</integer>
+</resources>
