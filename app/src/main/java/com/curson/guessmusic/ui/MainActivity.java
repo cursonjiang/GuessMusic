@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -15,14 +16,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.curson.guessmusic.R;
-import com.curson.guessmusic.model.Contacts;
+import com.curson.guessmusic.data.Constants;
+import com.curson.guessmusic.model.IWordButtonClickListener;
+import com.curson.guessmusic.model.Song;
 import com.curson.guessmusic.model.ViewHolder;
 import com.curson.guessmusic.view.MyGridView;
 
 import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements IWordButtonClickListener {
+
+    //当前关的索引
+    private int mCurrentStageIndex = -1;
+
+    //当前的歌曲
+    private Song mCurrentSong;
+
+    private static final String TAG = "MainActivity";
 
     private MyGridView mGridView;
 
@@ -79,6 +90,14 @@ public class MainActivity extends ActionBarActivity {
         mBtnPlayStart = (ImageButton) findViewById(R.id.btn_play_start);
         mGridView = (MyGridView) findViewById(R.id.gridview);
         mViewWordsContainer = (LinearLayout) findViewById(R.id.word_select_container);
+
+        //注册监听
+        mGridView.registOnWordButtonClick(this);
+    }
+
+    @Override
+    public void onWordButtonClick(ViewHolder button) {
+        Log.i(TAG, "3");
     }
 
     /**
@@ -192,9 +211,27 @@ public class MainActivity extends ActionBarActivity {
     }
 
     /**
+     * 读取当前关的歌曲信息
+     *
+     * @param stageIndex
+     * @return
+     */
+    private Song readStageSongInfo(int stageIndex) {
+        Song song = new Song();
+        String[] stage = Constants.SONG_INFO[stageIndex];
+
+        //因为是二维数组,0是歌曲,1是歌曲名字
+        song.setSongFileName(stage[Constants.INDEX_FILE_NAME]);
+        song.setSongName(stage[Constants.INDEX_SONG_NAME]);
+        return song;
+    }
+
+    /**
      * 初始化数据
      */
     private void initCurrentStageData() {
+        //读取当前关的歌曲信息
+        mCurrentSong = readStageSongInfo(++mCurrentStageIndex);
         //初始化已选择框
         mSelectWordsBtn = initSelectWord();
         ActionBar.LayoutParams params = new ActionBar.LayoutParams(140, 140);
@@ -215,7 +252,7 @@ public class MainActivity extends ActionBarActivity {
     private ArrayList<ViewHolder> initAllWord() {
         ArrayList<ViewHolder> data = new ArrayList<>();
         //获得所有待选文字
-        for (int i = 0; i < Contacts.COUNTS_WORDS; i++) {
+        for (int i = 0; i < Constants.COUNTS_WORDS; i++) {
             ViewHolder button = new ViewHolder();
             button.mContent = "哈";
             data.add(button);
@@ -230,7 +267,7 @@ public class MainActivity extends ActionBarActivity {
      */
     private ArrayList<ViewHolder> initSelectWord() {
         ArrayList<ViewHolder> data = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < mCurrentSong.getSongNameLength(); i++) {
             View view = LayoutInflater.from(this).inflate(R.layout.self_ui_gridview_item, null);
             ViewHolder button = new ViewHolder();
             button.mViewButton = (Button) view.findViewById(R.id.item_btn);

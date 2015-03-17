@@ -2,6 +2,7 @@ package com.curson.guessmusic.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.GridView;
 
 import com.curson.guessmusic.R;
+import com.curson.guessmusic.model.IWordButtonClickListener;
 import com.curson.guessmusic.model.ViewHolder;
 
 import java.util.ArrayList;
@@ -21,6 +23,9 @@ import java.util.ArrayList;
  * Created by Curson on 15/3/16.
  */
 public class MyGridView extends GridView {
+
+    private static final String TAG = "MyGridView";
+    private IWordButtonClickListener mWordButtonClickListener;
 
     private Animation mScaleAnimation;
 
@@ -70,7 +75,7 @@ public class MyGridView extends GridView {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
+            final ViewHolder holder;
             if (convertView == null) {
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.self_ui_gridview_item, null);
                 holder = mArrayList.get(position);
@@ -82,7 +87,13 @@ public class MyGridView extends GridView {
 
                 holder.mIndex = position;
                 holder.mViewButton = (Button) convertView.findViewById(R.id.item_btn);
-
+                holder.mViewButton.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.i(TAG, "1");
+                        mWordButtonClickListener.onWordButtonClick(holder);
+                    }
+                });
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
@@ -94,6 +105,16 @@ public class MyGridView extends GridView {
 
             return convertView;
         }
+    }
+
+    /**
+     * 注册监听接口
+     *
+     * @param listener
+     */
+    public void registOnWordButtonClick(IWordButtonClickListener listener) {
+        Log.i(TAG, "2");
+        mWordButtonClickListener = listener;
     }
 
 }
