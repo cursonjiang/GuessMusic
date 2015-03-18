@@ -6,6 +6,12 @@ package com.curson.guessmusic.data;
  */
 public class Constants {
 
+    public static final int ID_DIALOG_DELETE_WORD = 1;
+
+    public static final int ID_DIALOG_TIP_ANSWER = 2;
+
+    public static final int ID_DIALOG_LACK_COINS = 3;
+
     /**
      * 金币总数
      */

@@ -1,6 +1,7 @@
 package com.curson.guessmusic.ui;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -17,10 +18,12 @@ import android.widget.TextView;
 
 import com.curson.guessmusic.R;
 import com.curson.guessmusic.data.Constants;
+import com.curson.guessmusic.model.IAlertDialogButtonListener;
 import com.curson.guessmusic.model.IWordButtonClickListener;
 import com.curson.guessmusic.model.Song;
 import com.curson.guessmusic.model.ViewHolder;
 import com.curson.guessmusic.uitl.MyLog;
+import com.curson.guessmusic.uitl.Util;
 import com.curson.guessmusic.view.MyGridView;
 
 import java.io.UnsupportedEncodingException;
@@ -180,6 +183,8 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
             public void onClick(View v) {
                 if (judgeAppPassed()) {
                     //进入到通关界面
+                    startActivity(new Intent(MainActivity.this, AllPassView.class));
+                    finish();
                 } else {
                     //开始新一关,隐藏过关界面
                     mPassView.setVisibility(View.GONE);
@@ -584,6 +589,7 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
                 //减少金币
                 if (!handleCoins(-getTipWordCoins())) {
                     //金币不够,显示对话框
+                    showConfirmDialog(Constants.ID_DIALOG_LACK_COINS);
                     return;
                 }
                 break;
@@ -605,6 +611,7 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
         //减少金币
         if (!handleCoins(-getDeleteWordCoins())) {
             //金币不够,显示对话框
+            showConfirmDialog(Constants.ID_DIALOG_LACK_COINS);
             return;
         }
         //将这个索引对应的WordButton设置为不可见
@@ -708,7 +715,7 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteOneWord();
+                showConfirmDialog(Constants.ID_DIALOG_DELETE_WORD);
             }
         });
     }
@@ -721,10 +728,71 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tipAnswer();
+                showConfirmDialog(Constants.ID_DIALOG_TIP_ANSWER);
             }
         });
     }
+
+
+    /**
+     * 自定义AlertDialog事件响应
+     * 删除错误答案
+     */
+    private IAlertDialogButtonListener mBtnOkDeleteWordListener = new IAlertDialogButtonListener() {
+        @Override
+        public void onClick() {
+            deleteOneWord();
+        }
+    };
+
+    /**
+     * 答案提示
+     */
+    private IAlertDialogButtonListener mBtnOkTipAnswerListener = new IAlertDialogButtonListener() {
+        @Override
+        public void onClick() {
+            tipAnswer();
+        }
+    };
+
+    /**
+     * 金币不足
+     */
+    private IAlertDialogButtonListener mBtnOkLackCoinsListener = new IAlertDialogButtonListener() {
+        @Override
+        public void onClick() {
+            
+        }
+    };
+
+    /**
+     * 显示对话框
+     *
+     * @param id
+     */
+    private void showConfirmDialog(int id) {
+        switch (id) {
+            case Constants.ID_DIALOG_DELETE_WORD:
+                Util.showDialog(
+                        MainActivity.this,
+                        "确认花掉" + getDeleteWordCoins() + "个金币去掉一个错误答案?",
+                        mBtnOkDeleteWordListener);
+                break;
+            case Constants.ID_DIALOG_TIP_ANSWER:
+                Util.showDialog(
+                        MainActivity.this,
+                        "确认花掉" + getTipWordCoins() + "个金币获得一个文字提示?",
+                        mBtnOkTipAnswerListener);
+                break;
+            case Constants.ID_DIALOG_LACK_COINS:
+                Util.showDialog(
+                        MainActivity.this,
+                        "金币不足,去商店补充",
+                        mBtnOkLackCoinsListener);
+                break;
+        }
+    }
+
 
     @Override
     protected void onPause() {
