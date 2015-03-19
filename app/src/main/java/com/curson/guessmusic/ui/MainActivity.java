@@ -168,6 +168,9 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
         //停止正在播放的音乐
         MyPlayer.StopSong(MainActivity.this);
 
+        //播放过关音效
+        MyPlayer.playTone(MainActivity.this,Constants.INDEX_STONE_COIN);
+
         //当前关卡的索引
         mCurrentStagePassView = (TextView) findViewById(R.id.text_current_stage_pass);
         if (mCurrentStagePassView != null) {

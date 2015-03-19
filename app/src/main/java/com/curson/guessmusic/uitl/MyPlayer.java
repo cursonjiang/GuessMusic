@@ -5,11 +5,40 @@ import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.MediaPlayer;
 
+import com.curson.guessmusic.data.Constants;
+
 import java.io.IOException;
 
 public class MyPlayer {
 
+    //音效
+    private static MediaPlayer[] mToneMediaPlayer = new MediaPlayer[Constants.SONG_NAMES.length];
+
     private static MediaPlayer mMusicMediaPlayer;
+
+    /**
+     * 播放音效
+     *
+     * @param context
+     * @param index
+     */
+    public static void playTone(Context context, int index) {
+        AssetManager assetManager = context.getAssets();
+        if (mToneMediaPlayer[index] == null) {
+            mToneMediaPlayer[index] = new MediaPlayer();
+            try {
+                AssetFileDescriptor fileDescriptor = assetManager.openFd(Constants.SONG_NAMES[index]);
+                mToneMediaPlayer[index].setDataSource(
+                        fileDescriptor.getFileDescriptor(),
+                        fileDescriptor.getStartOffset(),
+                        fileDescriptor.getLength());
+                mToneMediaPlayer[index].prepare();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        mToneMediaPlayer[index].start();
+    }
 
     /**
      * 播放歌曲

@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.curson.guessmusic.R;
+import com.curson.guessmusic.data.Constants;
 import com.curson.guessmusic.model.IAlertDialogButtonListener;
 
 public class Util {
@@ -21,7 +22,7 @@ public class Util {
      * @param message
      * @param listener
      */
-    public static void showDialog(Context context, String message, final IAlertDialogButtonListener listener) {
+    public static void showDialog(final Context context, String message, final IAlertDialogButtonListener listener) {
         View dialogView;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -44,6 +45,9 @@ public class Util {
                 if (listener != null) {
                     listener.onClick();
                 }
+
+                //播放音效
+                MyPlayer.playTone(context, Constants.INDEX_STONE_ENTER);
             }
         });
 
@@ -54,6 +58,7 @@ public class Util {
                 if (mAlertDialog != null) {
                     mAlertDialog.dismiss();
                 }
+                MyPlayer.playTone(context,Constants.INDEX_STONE_CANCEL);
             }
         });
         builder.setView(dialogView);

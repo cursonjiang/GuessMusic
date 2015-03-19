@@ -6,6 +6,16 @@ package com.curson.guessmusic.data;
  */
 public class Constants {
 
+    /**
+     * 音乐索引
+     */
+    public final static int INDEX_STONE_ENTER = 0;
+    public final static int INDEX_STONE_CANCEL = 1;
+    public final static int INDEX_STONE_COIN = 2;
+
+    //音效文件名称
+    public final static String[] SONG_NAMES = {"enter.mp3", "cancel.mp3", "coin.mp3"};
+
     public static final int ID_DIALOG_DELETE_WORD = 1;
 
     public static final int ID_DIALOG_TIP_ANSWER = 2;
