@@ -23,6 +23,7 @@ import com.curson.guessmusic.model.IWordButtonClickListener;
 import com.curson.guessmusic.model.Song;
 import com.curson.guessmusic.model.ViewHolder;
 import com.curson.guessmusic.uitl.MyLog;
+import com.curson.guessmusic.uitl.MyPlayer;
 import com.curson.guessmusic.uitl.Util;
 import com.curson.guessmusic.view.MyGridView;
 
@@ -164,6 +165,9 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
         //停止未完成的动画
         mViewPan.clearAnimation();
 
+        //停止正在播放的音乐
+        MyPlayer.StopSong(MainActivity.this);
+
         //当前关卡的索引
         mCurrentStagePassView = (TextView) findViewById(R.id.text_current_stage_pass);
         if (mCurrentStagePassView != null) {
@@ -272,6 +276,9 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
                 mIsRunning = true;
                 mViewPanBar.startAnimation(mBarInAnim);
                 mBtnPlayStart.setVisibility(View.INVISIBLE);//播放按钮隐藏
+
+                //播放音乐
+                MyPlayer.PlaySong(MainActivity.this, mCurrentSong.getSongFileName());
             }
         }
     }
@@ -413,6 +420,9 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
         mAllWords = initAllWord();
         //更新数据
         mGridView.updateData(mAllWords);
+
+        //一开始播放音乐
+        handlePlayButton();
     }
 
     /**
@@ -761,7 +771,7 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
     private IAlertDialogButtonListener mBtnOkLackCoinsListener = new IAlertDialogButtonListener() {
         @Override
         public void onClick() {
-            
+
         }
     };
 
@@ -793,11 +803,14 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
         }
     }
 
-
     @Override
     protected void onPause() {
         //停止动画
         mViewPan.clearAnimation();
+
+        //暂停音乐
+        MyPlayer.StopSong(MainActivity.this);
+
         super.onPause();
     }
 }
