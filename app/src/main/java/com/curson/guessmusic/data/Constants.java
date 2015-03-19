@@ -7,6 +7,21 @@ package com.curson.guessmusic.data;
 public class Constants {
 
     /**
+     * 关卡的数据
+     */
+    public static final int INDEX_LOAD_DATA_STAGE = 0;
+
+    /**
+     * 金币的数据
+     */
+    public static final int INDEX_LOAD_DATA_COINS = 1;
+
+    /**
+     * 保存数据文件名
+     */
+    public static final String FILE_NAME_SAVE_DATA = "data.dat";
+
+    /**
      * 音乐索引
      */
     public final static int INDEX_STONE_ENTER = 0;

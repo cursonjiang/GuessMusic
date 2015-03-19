@@ -102,6 +102,11 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //读取数据
+        int[] datas = Util.readData(this);
+        mCurrentStageIndex = datas[Constants.INDEX_LOAD_DATA_STAGE];
+        mCurrentCoins = datas[Constants.INDEX_LOAD_DATA_COINS];
+
         initView();
         initAnimation();
         initListener();
@@ -169,7 +174,7 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
         MyPlayer.StopSong(MainActivity.this);
 
         //播放过关音效
-        MyPlayer.playTone(MainActivity.this,Constants.INDEX_STONE_COIN);
+        MyPlayer.playTone(MainActivity.this, Constants.INDEX_STONE_COIN);
 
         //当前关卡的索引
         mCurrentStagePassView = (TextView) findViewById(R.id.text_current_stage_pass);
@@ -808,6 +813,10 @@ public class MainActivity extends ActionBarActivity implements IWordButtonClickL
 
     @Override
     protected void onPause() {
+
+        //保存数据
+        Util.saveData(MainActivity.this, mCurrentStageIndex - 1, mCurrentCoins);
+
         //停止动画
         mViewPan.clearAnimation();
 
